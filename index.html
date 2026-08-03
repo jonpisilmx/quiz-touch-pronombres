@@ -58,8 +58,17 @@
                 <span id="translated-count" class="text-xs font-bold bg-teal-50 text-teal-700 px-2.5 py-1 rounded-full border border-teal-200">0 / 0 traducidos</span>
             </div>
 
-            <!-- Área interactiva de Palabras -->
-            <div id="sentence-container" class="flex flex-wrap gap-2.5 p-6 bg-slate-50 rounded-2xl border border-slate-200 min-h-[140px] items-center justify-center mb-6">
+            <!-- Área interactiva de Palabras + Botón de Audio -->
+            <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 min-h-[160px] flex flex-col items-center justify-center gap-4 mb-6">
+                <div id="sentence-container" class="flex flex-wrap gap-2.5 items-center justify-center"></div>
+                
+                <!-- Botón para escuchar pronunciación -->
+                <button onclick="playAudio()" class="inline-flex items-center gap-2 px-4 py-2 bg-teal-100 hover:bg-teal-200 active:bg-teal-300 text-teal-800 rounded-full font-medium text-xs md:text-sm transition shadow-sm border border-teal-200">
+                    <svg class="w-4 h-4 text-teal-700" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Escuchar pronunciación
+                </button>
             </div>
 
             <!-- Tarjeta de Explicación del Pronombre -->
@@ -304,6 +313,24 @@
             document.getElementById('card-pronoun').innerText = currentObj.pronoun;
             document.getElementById('card-explanation').innerText = currentObj.explanation;
             document.getElementById('pronoun-card').classList.remove('hidden');
+        }
+
+        function playAudio() {
+            if ('speechSynthesis' in window) {
+                // Cancela cualquier audio previo que se esté reproduciendo
+                window.speechSynthesis.cancel();
+
+                // Une todas las palabras traducidas de la frase actual
+                const fullText = sentences[currentIndex].words.map(w => w.en).join(' ');
+                
+                const utterance = new SpeechSynthesisUtterance(fullText);
+                utterance.lang = 'en-US'; // Pronunciación en inglés de EE.UU.
+                utterance.rate = 0.9; // Velocidad ligeramente pausada para facilitar el aprendizaje
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('Tu navegador no soporta la reproducción de audio sintético.');
+            }
         }
 
         function nextSentence() {
