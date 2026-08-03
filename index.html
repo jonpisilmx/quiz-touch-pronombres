@@ -9,7 +9,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
         .word-btn {
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
@@ -26,11 +26,11 @@
             </div>
             <span class="inline-block px-3 py-1 bg-teal-50 text-teal-700 text-xs font-semibold rounded-full uppercase tracking-wider mb-2">Inglés Nivel A1</span>
             <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Constructor Interactivo de Frases</h1>
-            <p class="text-slate-600 mb-6 text-sm md:text-base">Toca las palabras en español para ver la traducción <strong>literal y directa palabra por palabra</strong> al inglés.</p>
+            <p class="text-slate-600 mb-6 text-sm md:text-base">Toca los bloques en español para ver la traducción <strong>literal y exacta</strong> al inglés.</p>
             
             <div class="bg-teal-50 border-l-4 border-teal-500 p-4 text-left rounded-r-lg mb-6">
                 <p class="text-xs md:text-sm text-teal-900 font-medium">
-                    📌 <strong>Instrucciones:</strong> En cada una de las 15 frases, haz clic sobre cada palabra para ver su traducción exacta. Al completar la frase, aprenderás sobre el pronombre utilizado.
+                    📌 <strong>Instrucciones:</strong> Toca cada bloque para armar la oración en inglés. Si prefieres saltar una frase, puedes usar el botón de "Siguiente" al final del contenedor.
                 </p>
             </div>
 
@@ -54,15 +54,15 @@
 
             <!-- Indicador de toque -->
             <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Toca las palabras en español:</span>
-                <span id="translated-count" class="text-xs font-bold bg-teal-50 text-teal-700 px-2.5 py-1 rounded-full border border-teal-200">0 / 0 traducidas</span>
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Toca los bloques para traducir:</span>
+                <span id="translated-count" class="text-xs font-bold bg-teal-50 text-teal-700 px-2.5 py-1 rounded-full border border-teal-200">0 / 0 traducidos</span>
             </div>
 
             <!-- Área interactiva de Palabras -->
             <div id="sentence-container" class="flex flex-wrap gap-2.5 p-6 bg-slate-50 rounded-2xl border border-slate-200 min-h-[140px] items-center justify-center mb-6">
             </div>
 
-            <!-- Tarjeta de Explicación del Pronombre -->
+            <!-- Tarjeta de Explicación del Pronombre (Se activa automáticamente al completar) -->
             <div id="pronoun-card" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-5 space-y-3 mb-6 transition-all duration-300">
                 <div class="flex items-center gap-2 text-emerald-800 font-bold text-sm">
                     <span>✨ ¡Frase Completada!</span>
@@ -72,9 +72,12 @@
                     <strong id="card-pronoun" class="text-teal-700 text-base block mb-1"></strong>
                     <p id="card-explanation" class="text-slate-700 leading-relaxed"></p>
                 </div>
-                <button onclick="nextSentence()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-center gap-2">
-                    <span>Siguiente Frase</span>
-                    <span>➔</span>
+            </div>
+
+            <!-- Botón Permanente para Avanzar / Saltar -->
+            <div class="pt-2 border-t border-slate-100">
+                <button onclick="nextSentence()" id="skip-btn" class="w-full bg-slate-800 hover:bg-slate-900 active:bg-black text-white font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-center gap-2 shadow-sm">
+                    <span id="skip-btn-text">Siguiente Frase ➔</span>
                 </button>
             </div>
         </div>
@@ -88,7 +91,7 @@
             </div>
             <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full uppercase tracking-wider mb-2">¡Práctica Finalizada!</span>
             <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">¡Excelente Trabajo!</h2>
-            <p class="text-slate-600 mb-6 text-sm md:text-base">Has completado las 15 frases con traducciones directas y reforzado los pronombres en inglés.</p>
+            <p class="text-slate-600 mb-6 text-sm md:text-base">Has revisado las 15 frases con bloques de traducción exactos y repasado los pronombres clave.</p>
             
             <button onclick="restartApp()" class="w-full bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold py-3.5 px-6 rounded-lg shadow-md transition duration-200">
                 Repetir Ejercicio
@@ -103,9 +106,7 @@
                 words: [
                     { es: "Él", en: "He" },
                     { es: "camina", en: "walks" },
-                    { es: "en", en: "on" },
-                    { es: "la", en: "the" },
-                    { es: "playa.", en: "beach." }
+                    { es: "en la playa.", en: "on the beach." }
                 ],
                 pronoun: "He (Él) - Pronombre Sujeto",
                 explanation: "'He' es el pronombre de sujeto masculino singular. Va antes del verbo principal ('walks')."
@@ -114,11 +115,10 @@
                 words: [
                     { es: "Ella", en: "She" },
                     { es: "mira", en: "watches" },
-                    { es: "el", en: "the" },
-                    { es: "mar.", en: "ocean." }
+                    { es: "el mar.", en: "the ocean." }
                 ],
                 pronoun: "She (Ella) - Pronombre Sujeto",
-                explanation: "'She' es el pronombre de sujeto femenino singular."
+                explanation: "'She' sustituye al sujeto femenino singular antes del verbo."
             },
             {
                 words: [
@@ -142,8 +142,7 @@
                 words: [
                     { es: "Yo", en: "I" },
                     { es: "veo", en: "see" },
-                    { es: "un", en: "a" },
-                    { es: "barco.", en: "boat." }
+                    { es: "un barco.", en: "a boat." }
                 ],
                 pronoun: "I (Yo) - Pronombre Sujeto",
                 explanation: "'I' representa a la primera persona en singular y siempre se escribe con mayúscula en inglés."
@@ -155,37 +154,32 @@
                     { es: "agua.", en: "water." }
                 ],
                 pronoun: "You (Tú) - Pronombre Sujeto",
-                explanation: "'You' sirve tanto para la segunda persona del singular (tú) como del plural (ustedes)."
+                explanation: "'You' funciona para la segunda persona en singular (tú) y plural (ustedes)."
             },
             {
                 words: [
-                    { es: "El", en: "The" },
-                    { es: "sol", en: "sun" },
-                    { es: "es", en: "is" },
-                    { es: "muy", en: "very" },
-                    { es: "caliente.", en: "hot." }
+                    { es: "El sol", en: "The sun" },
+                    { es", en: "is" },
+                    { es: "muy caliente.", en: "very hot." }
                 ],
-                pronoun: "It (Sustitución implícita de 'The sun')",
-                explanation: "Cosas inanimadas o elementos naturales en singular como 'the sun' son equivalentes al pronombre 'It'."
+                pronoun: "The sun -> Equivalent to 'It'",
+                explanation: "Cosas inanimadas o elementos naturales en singular equivalen al pronombre neutro 'It'."
             },
             {
                 words: [
                     { es: "Carlos", en: "Carlos" },
-                    { es: "ayuda", en: "helps" },
-                    { es: "a", en: "me." },
-                    { es: "mí.", en: "" }
-                ].filter(w => w.es !== "" && w.en !== ""),
+                    { es: "me ayuda", en: "helps me" },
+                    { es: "a mí.", en: "today." }
+                ],
                 pronoun: "Me (A mí) - Pronombre Objeto",
-                explanation: "'Me' es el pronombre objeto de primera persona. Recibe la acción inmediatamente después del verbo ('helps me')."
+                explanation: "'Me' es el pronombre objeto de primera persona. Recibe la acción después del verbo ('helps me')."
             },
             {
                 words: [
-                    { es: "La", en: "The" },
-                    { es: "ola", en: "wave" },
+                    { es: "La ola", en: "The wave" },
                     { es: "golpea", en: "hits" },
-                    { es: "a", en: "him." },
-                    { es: "él.", en: "" }
-                ].filter(w => w.es !== "" && w.en !== ""),
+                    { es: "a él.", en: "him." }
+                ],
                 pronoun: "Him (A él) - Pronombre Objeto",
                 explanation: "Cuando un hombre recibe la acción después del verbo, usamos el pronombre de objeto 'him' (no 'he')."
             },
@@ -193,59 +187,52 @@
                 words: [
                     { es: "Yo", en: "I" },
                     { es: "veo", en: "see" },
-                    { es: "a", en: "her." },
-                    { es: "ella.", en: "" }
-                ].filter(w => w.es !== "" && w.en !== ""),
+                    { es: "a ella.", en: "her." }
+                ],
                 pronoun: "Her (A ella) - Pronombre Objeto",
-                explanation: "'Her' funciona como pronombre objeto femenino cuando está ubicado después del verbo ('see her')."
+                explanation: "'Her' es el pronombre objeto femenino que va ubicado después del verbo ('see her')."
             },
             {
                 words: [
-                    { es: "El", en: "The" },
-                    { es: "salvavidas", en: "lifeguard" },
-                    { es: "mira", en: "looks" },
-                    { es: "a", en: "at" },
+                    { es: "El salvavidas", en: "The lifeguard" },
+                    { es: "mira a", en: "looks at" },
                     { es: "nosotros.", en: "us." }
                 ],
                 pronoun: "Us (A nosotros) - Pronombre Objeto",
-                explanation: "'Us' es la forma de objeto para la primera persona del plural (recibe la acción tras el verbo o preposición)."
+                explanation: "'Us' es la forma de objeto para la primera persona plural tras un verbo o preposición."
             },
             {
                 words: [
                     { es: "Ella", en: "She" },
-                    { es: "busca", en: "searches" },
-                    { es: "a", en: "them." },
-                    { es: "ellos.", en: "" }
-                ].filter(w => w.es !== "" && w.en !== ""),
+                    { es: "busca a", en: "searches for" },
+                    { es: "ellos.", en: "them." }
+                ],
                 pronoun: "Them (A ellos) - Pronombre Objeto",
-                explanation: "'Them' es la forma de objeto plural para tercera persona (ellos/ellas)."
+                explanation: "'Them' es la forma de objeto plural para la tercera persona (ellos/ellas)."
             },
             {
                 words: [
                     { es: "Este", en: "This" },
-                    { es: "es", en: "is" },
-                    { es: "mi", en: "my" },
-                    { es: "sombrero.", en: "hat." }
+                    { es", en: "is" },
+                    { es: "mi sombrero.", en: "my hat." }
                 ],
                 pronoun: "My (Mi) - Adjetivo Posesivo",
-                explanation: "'My' expresa posesión directa de primera persona antes de un sustantivo ('my hat')."
+                explanation: "'My' expresa posesión directa de primera persona antes del sustantivo ('my hat')."
             },
             {
                 words: [
                     { es: "María", en: "Maria" },
                     { es: "trae", en: "brings" },
-                    { es: "su", en: "her" },
-                    { es: "toalla.", en: "towel." }
+                    { es: "su toalla.", en: "her towel." }
                 ],
                 pronoun: "Her (Su de ella) - Adjetivo Posesivo",
-                explanation: "'Her' indica pertenencia a una persona de género femenino ('her towel')."
+                explanation: "'Her' indica pertenencia a una mujer antes del objeto que posee."
             },
             {
                 words: [
                     { es: "Luis", en: "Luis" },
                     { es: "pierde", en: "loses" },
-                    { es: "sus", en: "his" },
-                    { es: "llaves.", en: "keys." }
+                    { es: "sus llaves.", en: "his keys." }
                 ],
                 pronoun: "His (Sus de él) - Adjetivo Posesivo",
                 explanation: "'His' indica pertenencia de un hombre antes del sustantivo ('his keys')."
@@ -309,7 +296,7 @@
         function updateCounter() {
             const translated = wordStates.filter(Boolean).length;
             const total = wordStates.length;
-            document.getElementById('translated-count').innerText = `${translated} / ${total} traducidas`;
+            document.getElementById('translated-count').innerText = `${translated} / ${total} traducidos`;
         }
 
         function showExplanation() {
